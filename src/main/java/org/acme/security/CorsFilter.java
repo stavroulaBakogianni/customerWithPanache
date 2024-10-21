@@ -1,4 +1,4 @@
-package org.acme.dto.security;
+package org.acme.security;
 
 import java.io.IOException;
 import javax.ws.rs.container.ContainerRequestContext;

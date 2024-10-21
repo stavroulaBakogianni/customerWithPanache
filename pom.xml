@@ -13,7 +13,7 @@
         <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
         <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
         <quarkus.platform.version>2.16.12.Final</quarkus.platform.version>
-         <lombok.version>1.18.34</lombok.version>
+        <lombok.version>1.18.34</lombok.version>
         <skipITs>true</skipITs>
         <surefire-plugin.version>3.0.0-M7</surefire-plugin.version>
     </properties>
@@ -29,7 +29,7 @@
         </dependencies>
     </dependencyManagement>
     <dependencies>
-      <dependency>
+        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>${lombok.version}</version>
@@ -88,6 +88,13 @@
             <artifactId>mapstruct</artifactId>
             <version>1.6.0.Beta1</version>
             <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-rest-client-reactive</artifactId>
+        </dependency><dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-resteasy-reactive-jackson</artifactId>
         </dependency>
     </dependencies>
     <build>

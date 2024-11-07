@@ -12,6 +12,7 @@ import org.acme.entity.Customer;
 import org.acme.mapper.CustomerMapper;
 import org.acme.repository.CustomerRepository;
 
+
 /**
  *
  * @author stavroulabakogianni
@@ -45,6 +46,54 @@ public class CustomerServiceImpl implements CustomerService {
         } catch (Exception e) {
             Log.errorf(e, "Error saving customer with VAT: %s", customerDto.getVat());
             return Optional.empty();
+        }
+    }
+
+    @Override
+    @Transactional
+    public Optional<CustomerDTO> updateCustomer(String vat, CustomerDTO updatedCustomerDto) {
+        try {
+            Optional<Customer> existingCustomerOpt = customerRepository.findByVat(vat);
+
+            if (existingCustomerOpt.isEmpty()) {
+                Log.warnf("Customer with VAT %s not found. Update aborted.", vat);
+                return Optional.empty();
+            }
+
+            Customer existingCustomer = existingCustomerOpt.get();
+
+            existingCustomer.setFirstName(updatedCustomerDto.getFirstName());
+            existingCustomer.setLastName(updatedCustomerDto.getLastName());
+            existingCustomer.setEmail(updatedCustomerDto.getEmail());
+            existingCustomer.setMobilePhone(updatedCustomerDto.getMobilePhone());
+
+            customerRepository.persist(existingCustomer);
+
+            Log.infof("Customer updated successfully with VAT: %s", vat);
+            return Optional.of(customerMapper.customerToDTO(existingCustomer));
+        } catch (Exception e) {
+            Log.errorf(e, "Error updating customer with VAT: %s", vat);
+            return Optional.empty();
+        }
+    }
+
+    @Override
+    @Transactional
+    public boolean deleteCustomer(String vat) {
+        try {
+            Optional<Customer> customerOpt = customerRepository.findByVat(vat);
+
+            if (customerOpt.isPresent()) {
+                customerRepository.delete(customerOpt.get());
+                Log.infof("Customer deleted successfully with VAT: %s", vat);
+                return true;
+            } else {
+                Log.warnf("Customer with VAT %s not found. Delete aborted.", vat);
+                return false;
+            }
+        } catch (Exception e) {
+            Log.errorf(e, "Error deleting customer with VAT: %s", vat);
+            return false;
         }
     }
 
